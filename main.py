@@ -1,19 +1,33 @@
 #!/usr/local/bin/python3.7
 
 import praw
-import secrets
 import requests
 import datetime
 import os
+import json
+
+local_deploy = False
+
+if local_deploy: #Very very bad practice, I just don't know how to do environment variables
+    with open("creds.json") as jf:
+        creds = json.load(jf)
+
+        reddit = praw.Reddit(client_id = creds['client_id'],
+                     client_secret = creds['client_secret'],
+                     user_agent = creds['user_agent'],
+                     username = creds['username'],
+                     password = creds['password'])
+else:
+    reddit = praw.Reddit(
+        client_id = os.environ['client_id'],
+        client_secret = os.environ['client_secret'],
+        user_agent = os.environ['user_agent'],
+        username = os.environ['username'],
+        password = os.environ['password']
+    )
+
 
 month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
-reddit = praw.Reddit(client_id = secrets.CLIENT_ID,
-             client_secret = secrets.CLIENT_SECRET,
-             user_agent = secrets.USER_AGENT,
-             username = secrets.USERNAME,
-             password = secrets.PASSWORD)
-
 
 def get_page():
     passed = False

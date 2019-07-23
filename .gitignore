@@ -1,3 +1,4 @@
 *.pyc
 .idea/
 secrets.py
+creds.json
